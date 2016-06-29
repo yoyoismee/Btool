@@ -6,6 +6,7 @@ if(!require(random)){
   install.packages("random",repos="http://cran.rstudio.com/")
   require(random)
 }
+options(scipen = 100)
 tmp<-list.files("Data/dataset")
 last_graph_name<-0
 if(length(tmp)>0){
