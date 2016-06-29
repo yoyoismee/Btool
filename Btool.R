@@ -3,7 +3,6 @@ tryCatch(source(paste(WD,"/Source/prescript.R",sep = "")),error = function(e){pr
 cat("This is Btool, a utility tool for graph benchmarking
 -g to gen graph
 -t to testing
--i to insert new dataset, algorithm, or KPI
 -q to exit program\n")
 while(TRUE){
   cat("Btool : home $")
