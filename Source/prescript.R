@@ -1,12 +1,12 @@
 if(!require(igraph)){
-  install.packages("igraph")
+  install.packages("igraph",repos="http://cran.rstudio.com/")
   require(igraph)
 }
 if(!require(random)){
-  install.packages("random")
+  install.packages("random",repos="http://cran.rstudio.com/")
   require(random)
 }
-tmp<-list.files("data/dataset")
+tmp<-list.files("Data/dataset")
 last_graph_name<-0
 if(length(tmp)>0){
   tmp<-strsplit(tmp,"_")
@@ -15,17 +15,17 @@ if(length(tmp)>0){
       last_graph_name<-as.numeric(tmp[[i]][2])
   }
 }
-tmp<-list.files("data/kpi")
+tmp<-list.files("Data/kpi")
 if(length(tmp)>0){
   for(i in tmp){
-    source(paste("data/kpi/",i,sep = ""))
+    source(paste("Data/kpi/",i,sep = ""))
     cat("sourced",i,"\n")
   }
 }
-tmp<-list.files("data/algorithm")
+tmp<-list.files("Data/algorithm")
 if(length(tmp)>0){
   for(i in tmp){
-    source(paste("data/algorithm/",i,sep = ""))
+    source(paste("Data/algorithm/",i,sep = ""))
     cat("sourced",i,"\n")
   }
 }

@@ -1,5 +1,5 @@
 cat("Hi this is tester module\n")
-all_name<-list.files("data/dataset")
+all_name<-list.files("Data/dataset")
 if(length(all_name)>0){
   n_name <- all_name[grepl(all_name,pattern = "network")]
   c_name <- all_name[grepl(all_name,pattern = "community")]
@@ -7,8 +7,8 @@ if(length(all_name)>0){
   p_name <- all_name[grepl(all_name,pattern = "parameter")]
   
 }
-kpi_list<-read.csv("metadata/kpilist.csv")
-algorithm_list<-read.csv("metadata/algorithmlist.csv")
+kpi_list<-read.csv("Metadata/kpilist.csv")
+algorithm_list<-read.csv("Metadata/algorithmlist.csv")
 if(length(n_name)>0){
   UU<-0
   DU<-0
@@ -173,7 +173,7 @@ dw for directed weighted graph\n")
     cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
     progress<-progress+1
     isDirec<-strsplit(gn,"_")[[1]][3]=="D"
-    g<-read_graph(paste("data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
+    g<-read_graph(paste("Data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
     GID<-strsplit(gn,"_")[[1]][5]
     result[result$graphID==GID,]$directed<-isDirec
     result[result$graphID==GID,]$weighted<-strsplit(gn,"_")[[1]][4]=="W"
@@ -185,8 +185,8 @@ dw for directed weighted graph\n")
         result[result$graphID==GID,Kname]<-Kfun(g)
       }
     }
-    if(file.exists(paste("data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""))){
-      sol<-read.csv(file = paste("data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""),header = F,sep = "\t")
+    if(file.exists(paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""))){
+      sol<-read.csv(file = paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""),header = F,sep = "\t")
       names(sol)<-c("V","cl")
     }
     for(al in testing_algorithm){
