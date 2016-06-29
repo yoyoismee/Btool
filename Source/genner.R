@@ -162,7 +162,6 @@ curr<-strsplit(gsub(":","-",toString(Sys.time()))," ")[[1]]
 for(i in 1:length(p1)){
   for (j in 1:Ng){
     cat("\r",round(((i-1)*Ng+j)/(Ng*length(p1))*10000)/100," % (",((i-1)*Ng+j),"out of", (Ng*length(p1)),")")
-    cat(p1[i],"\n")
     tryCatch(system(p1[i],ignore.stdout=T),error=function(e){cat("error in external programm\n")})
     if(file.exists(toString(sgn$Nname))){
       gname<-paste("G_",last_graph_name+1,"_",sgn$graph_spec,"_",randomStrings(n=1,len = 10),sep="")
