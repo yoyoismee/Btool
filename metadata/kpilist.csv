@@ -1,0 +1,21 @@
+"kpi_name","fun_name","input_type"
+"total_vertec","nl_get_V_count",1
+"total_edge","nl_get_E_count",1
+"meanK","nl_get_mean_k",1
+"clustering_coefficient","transitivity",1
+"transitivity","transitivity",1
+"graph_density","graph.density",1
+"edge_connectivity","edge.connectivity",1
+"graph_cohesion","graph.cohesion",1
+"assortativity_degree","assortativity_degree",1
+"centrality_betweenness","nl_betweenness",1
+"centrality_closeness","nl_closeness",1
+"centrality_degree","nl_degree",1
+"centrality_eigenvector","nl_eigenvector",1
+"max_cliques_count","nl_cliques_count",1
+"modularity","modularity",2
+"variation_of_information","nl_vi",3
+"split-join_distance ","nl_sj",3
+"normal_mutual_information","nl_nmi",3
+"Rand_index","nl_comran",3
+"adjusted_Rand_index","nl_adjcomran",3

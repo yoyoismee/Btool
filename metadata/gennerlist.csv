@@ -1,0 +1,5 @@
+"algo","info","Fname","needed","option","Nname","Cname","Sname","graph_spec"
+"LFR_Package1","undirected unweighted LFR network","lfr1","N-k-maxk-mu","t1-t2-minc-maxc-on-om-C","network.dat","community.dat","statistics.dat","U_U"
+"LFR_Package2","undirected weighted LFR network","lfr2","N-k-maxk-muw","mut-beta-t1-t2-minc-maxc-on-om-C","network.dat","community.dat","statistics.dat","U_W"
+"LFR_Package3","directed unweighted LFR network","lfr3","N-k-maxk-mu","t1-t2-on-om-minc-maxc","network.dat","community.dat","statistics.dat","D_U"
+"LFR_Package4","directed weighted LFR network","lfr4","N-k-maxk-muw","t1-t2-on-om-beta-mut-minc-maxc","network.dat","community.dat","statistics.dat","D_W"

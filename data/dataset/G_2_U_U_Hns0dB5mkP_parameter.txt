@@ -1,0 +1,1 @@
+LFR_Package1 -N 200 -k 15 -maxk 40 -mu 0.5
