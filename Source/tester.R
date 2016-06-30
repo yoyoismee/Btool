@@ -148,28 +148,29 @@ dw for directed weighted graph\n")
     stop()
   }
   
-  graphID<-strsplit(testing_graph[1],"_")[[1]][5]
-  if(length(testing_graph)>1){
-    for(i in 2:length(testing_graph)){
-      graphID<-c(graphID,strsplit(testing_graph[i],"_")[[1]][5])
-    }
-  }
+  # graphID<-strsplit(testing_graph[1],"_")[[1]][5]
+  # if(length(testing_graph)>1){
+  #   for(i in 2:length(testing_graph)){
+  #     graphID<-c(graphID,strsplit(testing_graph[i],"_")[[1]][5])
+  #   }
+  # }
   algorithm_name<- toString(algorithm_list[testing_algorithm[1],]$algo_name)
   if(length(testing_algorithm)>1){
     for(i in 2:length(testing_algorithm)){
       algorithm_name<- c(algorithm_name,toString(algorithm_list[testing_algorithm[i],]$algo_name))
     }
   }
-  result<-expand.grid(graphID,algorithm_name)
-  names(result)<-c("graphID","algorithm_name")
-  result$runtime<-NA
-  result$directed<-NA
-  result$weighted<-NA
-  for(i in 1:nrow(kpi_list)){
-    result[,toString(kpi_list[i,]$kpi_name)]<-NA
-  }
   progress<-0
   for(gn in testing_graph){
+    graphID<-strsplit(gn,"_")[[1]][5]
+    result<-expand.grid(graphID,algorithm_name)
+    names(result)<-c("graphID","algorithm_name")
+    result$runtime<-NA
+    result$directed<-NA
+    result$weighted<-NA
+    for(i in 1:nrow(kpi_list)){
+      result[,toString(kpi_list[i,]$kpi_name)]<-NA
+    }
     cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
     progress<-progress+1
     isDirec<-strsplit(gn,"_")[[1]][3]=="D"
@@ -218,8 +219,8 @@ dw for directed weighted graph\n")
         }
       }
     }
+    write.table(result,file = "Test_Result.csv",row.names =F,col.names = !file.exists("Test_Result.csv"),append = T,sep = ",")
   }
-  write.csv(result,file = "Test_Result.csv",row.names = F,append = T)
   cat("you can see result in",WD,"file named Test_Result.csv\n")
 }else{
 cat("there is no data set to test\n
