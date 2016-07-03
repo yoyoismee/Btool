@@ -7,6 +7,13 @@ if(!require(random)){
   require(random)
 }
 options(scipen = 100)
+Argument<-commandArgs(trailingOnly = T)
+if(length(Argument)==0){
+  inputSource<- file("stdin")
+}else{
+  inputSource<- file(description = Argument,open = "r",blocking = T)
+}
+
 tmp<-list.files("Data/dataset")
 last_graph_name<-0
 if(length(tmp)>0){

@@ -5,7 +5,7 @@ for(i in 1:nrow(gennerlist))
   cat(i," for ",toString(gennerlist[i,]$algo)," ",toString(gennerlist[i,]$info),"\n")
 while(T){
   cat("Btool : generator module $")
-  userInput <- readLines(file("stdin"),1)
+  userInput <- readLines(inputSource,1)
   userInput<-as.integer(userInput)
   if(!is.na(userInput))
     if(userInput>0)
@@ -47,7 +47,7 @@ for(i in 1:length(needed)){
   cat("input ",needed[i],"\n")
   while(T){
     cat("Btool : generator module $")
-    userInput <- readLines(file("stdin"),1)
+    userInput <- readLines(inputSource,1)
     flag<-substr(trimws(userInput),1,2)
     if(flag == "-v"){
       userInput<-substr(trimws(userInput),3,99999)
@@ -93,7 +93,7 @@ cat(paste("-",optional[x],sep = ""),"\n")
 cat("input parameter name to specified or -99 if to continue\n")
 while(T){
   cat("Btool : generator module $")
-  userInput <- readLines(file("stdin"),1)
+  userInput <- readLines(inputSource,1)
   flag<-substr(trimws(userInput),1,3)
   if(flag == "-99"){
     break()
@@ -102,7 +102,7 @@ while(T){
     cat("input",opP,"\n")
       while(T){
         cat("Btool : generator module $")
-        userInput <- readLines(file("stdin"),1)
+        userInput <- readLines(inputSource,1)
         flag<-substr(trimws(userInput),1,2)
         if(flag == "-v"){
           userInput<-substr(trimws(userInput),3,99999)
@@ -147,7 +147,7 @@ while(T){
 cat("specified number so graph per setting\n")
 while(T){
   cat("Btool : generator module $")
-  userInput <- readLines(file("stdin"),1)
+  userInput <- readLines(inputSource,1)
   userInput<-as.integer(userInput)
   if(!is.na(userInput)){
     if(userInput>0){

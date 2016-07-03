@@ -6,7 +6,8 @@ cat("This is Btool, a utility tool for graph benchmarking
 -q to exit program\n")
 while(TRUE){
   cat("Btool : home $")
-  userInput <- readLines(file("stdin"),1)
+  userInput <- readLines(inputSource,1)
+  
   flag<-substr(trimws(userInput),1,2)
   if(flag=="-q"){
     break()

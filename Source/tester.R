@@ -31,7 +31,8 @@ dw for directed weighted graph\n")
   graph_type<-0
   while(TRUE){
     cat("Btool : tester $")
-    userInput <- readLines(file("stdin"),1)
+    userInput <- readLines(inputSource,1)
+    
     flag<-substr(trimws(userInput),1,2)
     if(flag=="aa"){
       graph_type<-0
@@ -55,7 +56,8 @@ dw for directed weighted graph\n")
   cat("select proportion of graph to test (0<proportion<=1)\n")
   while(T){
     cat("Btool : tester $")
-    userInput <- readLines(file("stdin"),1)
+    userInput <- readLines(inputSource,1)
+    
     userInput<-as.numeric(userInput)
     if(!is.na(userInput)){
       if(userInput>0&userInput<=1){
@@ -76,7 +78,8 @@ dw for directed weighted graph\n")
 
   while(T){
     cat("Btool : tester $")
-    userInput <- readLines(file("stdin"),1)
+    userInput <- readLines(inputSource,1)
+    
     flag<-substr(trimws(userInput),1,2)
     if(flag == "-v"){
       userInput<-substr(trimws(userInput),3,99999)
