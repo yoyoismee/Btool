@@ -178,6 +178,9 @@ dw for directed weighted graph\n")
     progress<-progress+1
     isDirec<-strsplit(gn,"_")[[1]][3]=="D"
     g<-read_graph(paste("Data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
+    if(!isDirec){
+      g<-simplify(g)
+    }
     GID<-strsplit(gn,"_")[[1]][5]
     result[result$graphID==GID,]$directed<-isDirec
     result[result$graphID==GID,]$weighted<-strsplit(gn,"_")[[1]][4]=="W"
