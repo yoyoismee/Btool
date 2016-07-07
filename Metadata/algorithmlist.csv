@@ -3,7 +3,7 @@
 "edge_betweenness","cluster_edge_betweenness",TRUE,TRUE,1
 "fast_greedy","cluster_fast_greedy",FALSE,TRUE,1
 "info_map","cluster_infomap",TRUE,TRUE,1
-"labels_propagating","cluster_label_prop",TRUE,TRUE,1
+"labels_propagating","label.propagation.community",TRUE,TRUE,1
 "leading_eigenvector","cluster_leading_eigen",FALSE,TRUE,1
 "luvain","cluster_louvain",FALSE,TRUE,1
 "optimal","cluster_optimal",TRUE,FALSE,1
