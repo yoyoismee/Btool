@@ -35,6 +35,7 @@ if(length(tmp)>0){
   }
 }
 tmp<-list.files("Data/algorithm")
+tmp<-tmp[!tmp%in%"exe"]
 if(length(tmp)>0){
   for(i in tmp){
     source(paste("Data/algorithm/",i,sep = ""))
