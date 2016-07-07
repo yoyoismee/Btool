@@ -13,6 +13,7 @@
 "centrality_degree","nl_degree",1
 "centrality_eigenvector","nl_eigenvector",1
 "max_cliques_count","nl_cliques_count",1
+"nb_cluster","nb_cluster",2
 "modularity","modularity",2
 "variation_of_information","nl_vi",3
 "split-join_distance ","nl_sj",3
