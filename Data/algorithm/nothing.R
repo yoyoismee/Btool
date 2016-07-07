@@ -1,1 +1,0 @@
-nocluster<- function(g){rep(1,length(V(g)))}
