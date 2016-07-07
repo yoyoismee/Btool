@@ -6,6 +6,10 @@ if(!require(random)){
   install.packages("random",repos="http://cran.rstudio.com/")
   require(random)
 }
+if(!require(parallel)){
+  install.packages("parallel",repos="http://cran.rstudio.com/")
+  require(parallel)
+}
 options(scipen = 100)
 Argument<-commandArgs(trailingOnly = T)
 if(length(Argument)==0){

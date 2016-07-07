@@ -163,6 +163,24 @@ dw for directed weighted graph\n")
       algorithm_name<- c(algorithm_name,toString(algorithm_list[testing_algorithm[i],]$algo_name))
     }
   }
+  
+  cat("specify number of paralleling thread\n")
+  while(T){
+    cat("Btool : tester $")
+    userInput <- readLines(inputSource,1)
+    
+    userInput<- as.integer(userInput)
+    if(!is.na(userInput)){
+      if(userInput>0){
+        Fork_no<-userInput
+        break()
+      }
+    }
+    cat("invalid input\n")
+  }
+  
+  
+  
   progress<-0
   for(gn in testing_graph){
     graphID<-strsplit(gn,"_")[[1]][5]
@@ -227,6 +245,7 @@ dw for directed weighted graph\n")
     }
     write.table(result,file = "Test_Result.csv",row.names =F,col.names = !file.exists("Test_Result.csv"),append = T,sep = ",")
   }
+  
   cat("you can see result in",WD,"file named Test_Result.csv\n")
 }else{
 cat("there is no data set to test\n
