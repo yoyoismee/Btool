@@ -202,14 +202,39 @@ dw for directed weighted graph\n")
       cat(Aname,"\n")
       if(isDirec&!algorithm_list[al,]$direc_compat){next()}
       if(length(V(g))>50&!algorithm_list[al,]$large_compat){next()}
-      st<- Sys.time()
-      cl<- tryCatch(algo_fun(g),error =function(e){NA})
-      en<- Sys.time()
-      rtime<- difftime(en,st,units = "secs")
-      if(algorithm_list[al,]$outputType==1&!is.na(cl)){
-        cl<-cl$membership
+      #=========
+      #st<- Sys.time()
+      #cl<- tryCatch(algo_fun(g),error =function(e){NA})
+      #en<- Sys.time()
+      #rtime<- difftime(en,st,units = "secs")
+      #if(algorithm_list[al,]$outputType==1&!is.na(cl)){
+      #  cl<-cl$membership
+      #}
+      #result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+      #==========
+      ## Insert execution inside outputType condition
+      # outputType ==0
+      if(algorithm_list[al,]$outputType==0){
+            cl<- tryCatch(algo_fun(sol$cl),error =function(e){NA})
       }
-      result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+      # outputType ==1
+      if(algorithm_list[al,]$outputType==1){
+            st<- Sys.time()
+            cl<- tryCatch(algo_fun(g),error =function(e){NA})
+            en<- Sys.time()
+            rtime<- difftime(en,st,units = "secs")
+            cl<-cl$membership
+            result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+      }
+      # outputType ==2
+      if(algorithm_list[al,]$outputType==2){
+          st<- Sys.time()
+          cl<- tryCatch(algo_fun(gn),error =function(e){NA})
+          en<- Sys.time()
+          rtime<- difftime(en,st,units = "secs")
+          result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+      }
+      
       for(kp in 1:nrow(kpi_list)){
         if(kpi_list[kp,]$input_type==2){
           Kfun<-get(toString(kpi_list[kp,]$fun_name))
