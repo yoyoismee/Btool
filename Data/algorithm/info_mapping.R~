@@ -1,4 +1,4 @@
-Cluster_infomapping <- function(file){
+cluster_infomapping <- function(file){
     # Executing external program Infomap to calculate cluster
     infomapping <- paste("./Data/algorithm/exe/Infomap --clu ","./Data/dataset/",file," .",sep = "")
     tryCatch(system(infomapping,ignore.stdout=T),error=function(e){cat("Error in executing external program\n")})

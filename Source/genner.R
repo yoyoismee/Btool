@@ -169,7 +169,12 @@ for(i in 1:length(p1)){
         file.rename(toString(sgn$Sname),paste("Data/dataset/",gname,"_statistics.txt",sep = ""))
       }
       if(file.exists(toString(sgn$Nname))){
-        file.rename(toString(sgn$Nname),paste("Data/dataset/",gname,"_network.txt",sep = ""))
+        isDirec<-strsplit(toString(sgn$graph_spec),"_")[[1]][1]=="D"
+        graph_tmp <- read_graph(toString(sgn$Nname),format = "ncol", directed = isDirec)
+        graph_tmp <- simplify(graph_tmp)
+        write_graph(graph = graph_tmp, file = paste("Data/dataset/",gname,"_network.txt",sep = ""), format = "ncol")
+        tryCatch(system(paste("rm -f ",toString(sgn$Nname),sep = ""),ignore.stdout = T), error=function(e){cat("Error in deleting network.dat -- genner.R -- Line 176 \n")})
+        #file.rename(toString(sgn$Nname),paste("Data/dataset/",gname,"_network.txt",sep = ""))
       }
       if(file.exists(toString(sgn$Cname))){
         file.rename(toString(sgn$Cname),paste("Data/dataset/",gname,"_community.txt",sep = ""))
