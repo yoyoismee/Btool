@@ -172,7 +172,7 @@ dw for directed weighted graph\n")
     userInput<- as.integer(userInput)
     if(!is.na(userInput)){
       if(userInput>0){
-        Fork_no<-userInput
+        semaphore<-userInput
         break()
       }
     }
@@ -180,95 +180,126 @@ dw for directed weighted graph\n")
   }
   
   
-  
+  fullsemaphore<-semaphore
   progress<-0
+  cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
   for(gn in testing_graph){
-    graphID<-strsplit(gn,"_")[[1]][5]
-    result<-expand.grid(graphID,algorithm_name)
-    names(result)<-c("graphID","algorithm_name")
-    result$runtime<-NA
-    result$directed<-NA
-    result$weighted<-NA
-    for(i in 1:nrow(kpi_list)){
-      result[,toString(kpi_list[i,]$kpi_name)]<-NA
-    }
-    cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
-    progress<-progress+1
-    isDirec<-strsplit(gn,"_")[[1]][3]=="D"
-    g<-read_graph(paste("Data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
-    if(!isDirec){
-      g<-simplify(g)
-    }
-    GID<-strsplit(gn,"_")[[1]][5]
-    result[result$graphID==GID,]$directed<-isDirec
-    result[result$graphID==GID,]$weighted<-strsplit(gn,"_")[[1]][4]=="W"
-    for(kp in 1:nrow(kpi_list)){
-      if(kpi_list[kp,]$input_type==1){
-        Kfun<-get(toString(kpi_list[kp,]$fun_name))
-        Kname<-toString(kpi_list[kp,]$kpi_name)
-        cat(Kname,"\n")
-        result[result$graphID==GID,Kname]<-Kfun(g)
+    while(semaphore==0){
+      done<-parallel:::selectChildren(timeout = 0)
+      if(is.null(done)){
+        stop("something totally wrong")
       }
-    }
-    if(file.exists(paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""))){
-      sol<-read.csv(file = paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""),header = F,sep = "\t")
-      names(sol)<-c("V","cl")
-    }
-    for(al in testing_algorithm){
-      algo_fun<-get(toString(algorithm_list[al,]$fun_name))
-      Aname<-toString(algorithm_list[al,]$algo_name)
-      cat(Aname,"\n")
-      if(isDirec&!algorithm_list[al,]$direc_compat){next()}
-      if(length(V(g))>50&!algorithm_list[al,]$large_compat){next()}
-      #=========
-      #st<- Sys.time()
-      #cl<- tryCatch(algo_fun(g),error =function(e){NA})
-      #en<- Sys.time()
-      #rtime<- difftime(en,st,units = "secs")
-      #if(algorithm_list[al,]$outputType==1&!is.na(cl)){
-      #  cl<-cl$membership
-      #}
-      #result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
-      #==========
-      ## Insert execution inside outputType condition
-      # outputType ==0
-      if(algorithm_list[al,]$outputType==0){
-            cl<- tryCatch(algo_fun(sol$cl),error =function(e){NA})
+      if(done>1){
+        for (ps in done) {
+          parallel:::readChild(ps)
+          semaphore<-semaphore+1
+          progress<-progress+1
+          cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
+        }
       }
-      # outputType ==1
-      if(algorithm_list[al,]$outputType==1){
+      Sys.sleep(5)
+    }
+    semaphore<-semaphore-1
+    p <- parallel:::mcfork()
+    if (inherits(p, "masterProcess")) {  
+      graphID<-strsplit(gn,"_")[[1]][5]
+      result<-expand.grid(graphID,algorithm_name)
+      names(result)<-c("graphID","algorithm_name")
+      result$runtime<-NA
+      result$directed<-NA
+      result$weighted<-NA
+      for(i in 1:nrow(kpi_list)){
+        result[,toString(kpi_list[i,]$kpi_name)]<-NA
+      }
+      isDirec<-strsplit(gn,"_")[[1]][3]=="D"
+      g<-read_graph(paste("Data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
+      if(!isDirec){
+        g<-simplify(g)
+      }
+      GID<-strsplit(gn,"_")[[1]][5]
+      result[result$graphID==GID,]$directed<-isDirec
+      result[result$graphID==GID,]$weighted<-strsplit(gn,"_")[[1]][4]=="W"
+      for(kp in 1:nrow(kpi_list)){
+        if(kpi_list[kp,]$input_type==1){
+          Kfun<-get(toString(kpi_list[kp,]$fun_name))
+          Kname<-toString(kpi_list[kp,]$kpi_name)
+          result[result$graphID==GID,Kname]<-Kfun(g)
+        }
+      }
+      if(file.exists(paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""))){
+        sol<-read.csv(file = paste("Data/dataset/",sub(pattern = "network",replacement = "community",x = gn),sep = ""),header = F,sep = "\t")
+        names(sol)<-c("V","cl")
+      }
+      for(al in testing_algorithm){
+        algo_fun<-get(toString(algorithm_list[al,]$fun_name))
+        Aname<-toString(algorithm_list[al,]$algo_name)
+        if(isDirec&!algorithm_list[al,]$direc_compat){next()}
+        if(length(V(g))>50&!algorithm_list[al,]$large_compat){next()}
+        #=========
+        #st<- Sys.time()
+        #cl<- tryCatch(algo_fun(g),error =function(e){NA})
+        #en<- Sys.time()
+        #rtime<- difftime(en,st,units = "secs")
+        #if(algorithm_list[al,]$outputType==1&!is.na(cl)){
+        #  cl<-cl$membership
+        #}
+        #result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+        #==========
+        ## Insert execution inside outputType condition
+        # outputType ==0
+        if(algorithm_list[al,]$outputType==0){
+              cl<- tryCatch(algo_fun(sol$cl),error =function(e){NA})
+        }
+        # outputType ==1
+        if(algorithm_list[al,]$outputType==1){
+              st<- Sys.time()
+              cl<- tryCatch(algo_fun(g),error =function(e){NA})
+              en<- Sys.time()
+              rtime<- difftime(en,st,units = "secs")
+              cl<-cl$membership
+              result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
+        }
+        # outputType ==2
+        if(algorithm_list[al,]$outputType==2){
             st<- Sys.time()
-            cl<- tryCatch(algo_fun(g),error =function(e){NA})
+            cl<- tryCatch(algo_fun(gn),error =function(e){NA})
             en<- Sys.time()
             rtime<- difftime(en,st,units = "secs")
-            cl<-cl$membership
             result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
-      }
-      # outputType ==2
-      if(algorithm_list[al,]$outputType==2){
-          st<- Sys.time()
-          cl<- tryCatch(algo_fun(gn),error =function(e){NA})
-          en<- Sys.time()
-          rtime<- difftime(en,st,units = "secs")
-          result[result$graphID==GID&result$algorithm_name==Aname,]$runtime <- rtime
-      }
-      
-      for(kp in 1:nrow(kpi_list)){
-        if(kpi_list[kp,]$input_type==2){
-          Kfun<-get(toString(kpi_list[kp,]$fun_name))
-          Kname<-toString(kpi_list[kp,]$kpi_name)
-          result[result$graphID==GID&result$algorithm_name==Aname,Kname]<- tryCatch(Kfun(g,cl),error=function(e){NA})
+        }
+        
+        for(kp in 1:nrow(kpi_list)){
+          if(kpi_list[kp,]$input_type==2){
+            Kfun<-get(toString(kpi_list[kp,]$fun_name))
+            Kname<-toString(kpi_list[kp,]$kpi_name)
+            result[result$graphID==GID&result$algorithm_name==Aname,Kname]<- tryCatch(Kfun(g,cl),error=function(e){NA})
+          }
+        }
+        for(kp in 1:nrow(kpi_list)){
+          if(kpi_list[kp,]$input_type==3){
+            Kfun<-get(toString(kpi_list[kp,]$fun_name))
+            Kname<-toString(kpi_list[kp,]$kpi_name)
+            result[result$graphID==GID&result$algorithm_name==Aname,Kname]<-tryCatch(Kfun(cl,sol$cl),error=function(e){NA})
+          }
         }
       }
-      for(kp in 1:nrow(kpi_list)){
-        if(kpi_list[kp,]$input_type==3){
-          Kfun<-get(toString(kpi_list[kp,]$fun_name))
-          Kname<-toString(kpi_list[kp,]$kpi_name)
-          result[result$graphID==GID&result$algorithm_name==Aname,Kname]<-tryCatch(Kfun(cl,sol$cl),error=function(e){NA})
-        }
-      }
+      write.table(result,file = "Test_Result.csv",row.names =F,col.names = !file.exists("Test_Result.csv"),append = T,sep = ",")
+      parallel:::mcexit(exit.code = 0)
     }
-    write.table(result,file = "Test_Result.csv",row.names =F,col.names = !file.exists("Test_Result.csv"),append = T,sep = ",")
+  } 
+  while(semaphore<fullsemaphore){
+    done<-parallel:::selectChildren(timeout = 0)
+    if(is.null(done)){
+      stop("something totally wrong")
+    }
+    if(done>1){
+      for (ps in done) {
+        parallel:::readChild(ps)
+        semaphore<-semaphore+1
+        progress<-progress+1
+        cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")      }
+    }
+    Sys.sleep(5)
   }
   
   cat("you can see result in",WD,"file named Test_Result.csv\n")
