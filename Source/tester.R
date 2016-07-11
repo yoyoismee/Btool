@@ -182,6 +182,7 @@ dw for directed weighted graph\n")
   
   fullsemaphore<-semaphore
   progress<-0
+  cat("\r",progress/length(testing_graph)*100," % (",progress,"out of",length(testing_graph),")")
   for(gn in testing_graph){
     while(semaphore==0){
       done<-parallel:::selectChildren(timeout = 0)
