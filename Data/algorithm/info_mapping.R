@@ -8,7 +8,7 @@ Cluster_infomapping <- function(file){
     }
     
     # Remove output file of the program
-    remove_file <- paste("rm ./",list.files(path = "./", pattern = "network.clu"),sep = "")
+    remove_file <- paste("rm ./",strsplit(file,"\\.")[[1]][1],".clu",sep = "")
     tryCatch(system(remove_file,ignore.stdout=T),error=function(e){cat("Error in removing cluster file\n")})
     sol <- sol[order(sol[,"V"]),"cl"]
 }
