@@ -213,6 +213,7 @@ dw for directed weighted graph\n")
       }
       isDirec<-strsplit(gn,"_")[[1]][3]=="D"
       g<-read_graph(paste("Data/dataset/",gn,sep = ""),format = "ncol",directed = isDirec)
+      #Dont need anymore but we can keep it for safety
       if(!isDirec){
         g<-simplify(g)
       }

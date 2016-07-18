@@ -21,7 +21,7 @@ Cfinder3 <- function(file){
         output_community[is.na(output_community$cl),2] <- cl+1
         
         # Remove output file of the program
-        remove_file <- paste("rm -rf ./Data/dataset/",dir("./Data/dataset", recursive = F, pattern = "*network.txt_files"),sep = "")
+        remove_file <- paste("rm -rf ./Data/dataset/",file,"_files",sep = "")
         tryCatch(system(remove_file,ignore.stdout=T),error=function(e){cat("Error in removing cluster file\n")})
         
         #Output membership vector
