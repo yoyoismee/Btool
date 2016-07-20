@@ -3,6 +3,7 @@ tryCatch(source(paste(WD,"/Source/prescript.R",sep = "")),error = function(e){pr
 cat("This is Btool, a utility tool for graph benchmarking
 -g to gen graph
 -t to testing
+-a to attach new graph
 -q to exit program\n")
 while(TRUE){
   cat("Btool : home $")
@@ -15,6 +16,8 @@ while(TRUE){
     tryCatch(source(paste(WD,"/Source/tester.R",sep = "")),error = function(e){print(e);cat("fatal error in testing process\n")})
   }else if(flag=="-g"){
     tryCatch(source(paste(WD,"/Source/genner.R",sep = "")),error = function(e){print(e);cat("fatal error in generating data set process\n")})
+  }else if(flag=="-a"){
+    tryCatch(source(paste(WD,"/Source/attacher.R",sep = "")),error = function(e){print(e);cat("fatal error in attaching process\n")})
   }else{
     cat("Btool doesn't recognise this command\n")
   }
