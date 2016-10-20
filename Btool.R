@@ -1,5 +1,6 @@
 WD <- getwd()
 tryCatch(source(paste(WD,"/Source/prescript.R",sep = "")),error = function(e){print(e);cat("fatal error dution staring programm\n")})
+#welcoming message
 cat("This is Btool, a utility tool for graph benchmarking
 -g to gen graph
 -t to testing
@@ -9,6 +10,7 @@ while(TRUE){
   cat("Btool : home $")
   userInput <- readLines(inputSource,1)
   
+#Edit flow here
   flag<-substr(trimws(userInput),1,2)
   if(flag=="-q"){
     break()
@@ -22,6 +24,7 @@ while(TRUE){
     cat("Btool doesn't recognise this command\n")
   }
 }
+
 cat("good bye
 __________________________________________________
 Phatrasek J.
